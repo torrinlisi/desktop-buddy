@@ -1,0 +1,48 @@
+.mainImageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  /* .mainImage {
+      -webkit-app-region: drag;
+      cursor: move;
+  }
+   */
+
+  .chatBubble {
+    position: absolute;
+    top: 200px;
+    left: 130px;
+    background-color: #ffffffcc;
+    padding: 10px 14px;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    max-width: 200px;
+    z-index: 999;
+    cursor: pointer;
+
+  }
+
+  .chatBubble::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    right: 20px; /* Adjust this to shift the tail left/right */
+    border-width: 10px 10px 0px 10px;
+    border-style: solid;
+    border-color: #ffffffcc transparent transparent transparent;
+  }
+
+  .dragHandle {
+    position: absolute;
+    top: 150px;
+    right: 150px;
+    padding: 10px 14px;
+    font-size: 14px;
+    max-width: 200px;
+    z-index: 999;
+    -webkit-app-region: drag;
+  }
