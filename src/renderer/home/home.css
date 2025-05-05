@@ -23,7 +23,6 @@
     max-width: 200px;
     z-index: 999;
     cursor: pointer;
-
   }
 
   .chatBubble::after {
@@ -37,12 +36,74 @@
   }
 
   .dragHandle {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 14px;
+    max-width: 200px;
+    -webkit-app-region: drag;
+  }
+
+  .closeButton {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 14px;
+    max-width: 200px;
+    cursor: pointer;
+  }
+
+  .buttonContainer {
     position: absolute;
+    display: flex;
+    flex-direction: row;
     top: 150px;
     right: 150px;
     padding: 10px 14px;
     font-size: 14px;
-    max-width: 200px;
     z-index: 999;
-    -webkit-app-region: drag;
+  }
+
+  .expandedChatBubble {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 200px;
+    left: 50px;
+    background-color: #ffffffcc;
+    padding: 10px 14px;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    width: 200px;
+    height: 300px;
+    z-index: 999;
+  }
+
+  .expandedChatBubble::after {
+    content: "";
+    position: absolute;
+    top: 50px;
+    right: -10px;
+    border-width: 10px 0px 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent #ffffffcc;
+  }
+
+  .generatedTextContainer {
+    flex-grow: 1;
+  }
+
+  .typingTextContainer {
+    max-height: 200px;
+  }
+  
+  .typingText {
+    all: unset; /* Reset everything */
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    resize: none;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    word-wrap: break-word;
   }
