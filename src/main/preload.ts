@@ -2,7 +2,13 @@
 /* eslint no-unused-vars: off */
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
-export type Channels = 'ipc-example' | 'resize-window';
+export type Channels =
+  | 'ipc-example'
+  | 'resize-window'
+  | 'start-floating'
+  | 'stop-floating'
+  | 'openai-request'
+  | 'openai-response';
 
 const electronHandler = {
   ipcRenderer: {
@@ -25,5 +31,9 @@ const electronHandler = {
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
+
+contextBridge.exposeInMainWorld('env', {
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+});
 
 export type ElectronHandler = typeof electronHandler;

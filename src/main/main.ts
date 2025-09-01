@@ -12,6 +12,8 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import OpenAI from 'openai';
+import 'dotenv/config';
 
 class AppUpdater {
   constructor() {
@@ -33,6 +35,57 @@ ipcMain.on('resize-window', (event, { width, height }) => {
   if (mainWindow) {
     mainWindow.setSize(width, height);
   }
+});
+
+let floatInterval: NodeJS.Timeout | null = null;
+let floatStartTime: number | null = null;
+
+ipcMain.on('start-floating', () => {
+  if (mainWindow && !floatInterval) {
+    floatStartTime = Date.now();
+    const [baseX, baseY] = mainWindow.getPosition();
+    floatInterval = setInterval(() => {
+      if (mainWindow && floatStartTime) {
+        const amplitudeX = 100; // horizontal size
+        const amplitudeY = 50; // vertical size
+        const elapsed = (Date.now() - floatStartTime) / 1000; // seconds
+        // Figure 8 parametric equations
+        const x = baseX + Math.round(amplitudeX * Math.sin(elapsed));
+        const y =
+          baseY +
+          Math.round(amplitudeY * Math.sin(elapsed) * Math.cos(elapsed));
+        mainWindow.setPosition(x, y);
+      }
+    }, 16); // ~60fps
+  }
+});
+
+ipcMain.on('stop-floating', () => {
+  if (floatInterval) {
+    clearInterval(floatInterval);
+    floatInterval = null;
+    floatStartTime = null;
+  }
+});
+
+const stopFloatingOnInteraction = () => {
+  if (floatInterval) {
+    clearInterval(floatInterval);
+    floatInterval = null;
+    floatStartTime = null;
+  }
+};
+
+app.on('browser-window-focus', stopFloatingOnInteraction);
+app.on('browser-window-blur', stopFloatingOnInteraction);
+
+ipcMain.on('openai-request', async (event, { prompt }) => {
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const response = await client.responses.create({
+    model: 'gpt-5-mini',
+    input: prompt,
+  });
+  event.reply('openai-response', response.output_text);
 });
 
 if (process.env.NODE_ENV === 'production') {

@@ -54,3 +54,23 @@ a:hover {
   text-decoration: none;
 }
 
+.loading-dots {
+  display: inline-block;
+}
+
+.dot {
+  opacity: 0.2;
+  font-size: 4rem;
+  animation: chase 1.5s infinite;
+}
+
+.dot1 { animation-delay: 0s; }
+.dot2 { animation-delay: 0.33s; }
+.dot3 { animation-delay: 0.66s; }
+
+@keyframes chase {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  40% { opacity: 0.2; }
+  100% { opacity: 0.2; }
+}
